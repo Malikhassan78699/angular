@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="angular.min.js"></script>
+    <link href="bootstrap.css" rel="stylesheet" />
+    <title>angular example </title>
+</head>
+<body>
+    <script>
+
+        var myapp = angular.module("myApp", []);
+        myapp.controller("myController", function ($scope, $http) {
+            API_URL = "https://fawadlab.herokuapp.com/person/";
+            $scope.PersonList = null;
+            $scope.getRecords = function () {
+            $http.get(API_URL)
+                    .then(function (result) {
+                       $scope.personList = result.data;
+                       // alert("success 1");
+                        
+                    })
+            }
+            $scope.addPerson = function () {
+                var myobj = { "Name": $scope.name, "Age": $scope.age, "Height": $scope.height, "CNIC": $scope.cnic };
+                console.log(myobj);
+                $http.post(API_URL, myobj).then(function (result) {
+                   // alert("succes 2");
+
+                })
+
+               // alert("button clicked");
+
+            }
+        });
+
+
+
+
+            
+       
+    </script>
+
+    <div class="container" ng-app="myApp" ng-controller="myController">
+
+        {{getRecords()}}
+        <form>
+            <div class="form-group">
+                <label>Name</label>
+                <input class="form-control" type="text" ng-model="name" />
+            </div>
+            <div class="form-group">
+                <label>Age</label>
+                <input class="form-control" type="text" ng-model="age" />
+            </div>
+            <div class="form-group">
+                <label>Height</label>
+                <input class="form-control" type="text" ng-model="height" />
+            </div>
+            <div class="form-group">
+                <label>Cnic</label>
+                <input class="form-control" type="text" ng-model="cnic" />
+            </div>
+            <div class="form-group">
+                <button ng-click="addPerson()" class="=btn btn-primary" type="button">save record</button>
+            </div>
+        </form>
+
+        <table class="table table-hover">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Height</th>
+                <th>Cnic</th>
+            </tr>
+            <tr ng-repeat="person in personList">
+                <td>{{person.ID}}</td>
+                <td>{{person.Name}}</td>
+                <td>{{person.Age}}</td>
+                <td>{{person.Height}}</td>
+                <td>{{person.CNIC}}</td>
+
+            </tr>
+
+        </table>
+
+
+
+
+
+    </div>
+
+
+
+</body>
+</html>
